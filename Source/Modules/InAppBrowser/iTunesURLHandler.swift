@@ -15,7 +15,7 @@ class iTunesURLHandler: NSObject, URLHandler {
         // Valid iTunes URL structure:
         // Domain/Region Code(Optional)/Media Type/Media Name/ID?Prameters
         
-        if url.scheme != "https" || url.host != "itunes.apple.com" {
+        if url.scheme != "https" || url.host != "apps.apple.com" {
             return false
         }
         
