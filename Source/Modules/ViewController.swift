@@ -40,6 +40,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             let url = components.url!
             
             let viewController = InAppBrowserNavigationController.instantiate(url: url)
+            viewController.modalPresentationStyle = .fullScreen
             present(viewController, animated: true, completion: nil)
             
             return true
