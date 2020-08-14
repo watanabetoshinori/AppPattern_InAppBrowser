@@ -218,15 +218,24 @@ public class InAppBrowserViewController: UIViewController {
     // MARK: - Observe WebView state
 
     private func startObservingWebViewState() {
-        observers.append(webView.observe(\.estimatedProgress, options: .new) { (_, changes) in
+        observers.append(webView.observe(\.estimatedProgress, options: .new) { [weak self] (_, changes) in
+            guard let self = self else {
+                return
+            }
             self.progressBar.progress = Float(changes.newValue ?? 0)
         })
         
-        observers.append(webView.observe(\.title, options: .new) { (_, changes) in
+        observers.append(webView.observe(\.title, options: .new) { [weak self] (_, changes) in
+            guard let self = self else {
+                return
+            }
             self.updateTitle()
         })
         
-        observers.append(webView.observe(\.url, options: .new) { (_, changes) in
+        observers.append(webView.observe(\.url, options: .new) { [weak self] (_, changes) in
+            guard let self = self else {
+                return
+            }
             self.updateTitle()
             
             self.actionButton.isEnabled = true
@@ -237,17 +246,26 @@ public class InAppBrowserViewController: UIViewController {
             self.notSecureLabel.isHidden = isSecure
         })
         
-        observers.append(webView.observe(\.isLoading, options: .new) { (_, changes) in
+        observers.append(webView.observe(\.isLoading, options: .new) { [weak self] (_, changes) in
+            guard let self = self else {
+                return
+            }
             self.navigationItem.rightBarButtonItems = (changes.newValue == true) ? [self.stopButton] : [self.reloadButton]
             self.progressBar.isHidden = (changes.newValue == false)
         })
         
-        observers.append(webView.observe(\.canGoBack, options: .new) { (_, changes) in
+        observers.append(webView.observe(\.canGoBack, options: .new) { [weak self] (_, changes) in
+            guard let self = self else {
+                return
+            }
             self.backButton.isEnabled = (changes.newValue == true)
             self.backButton.tintColor = (changes.newValue == true) ? self.navigationController?.toolbar.tintColor : UIColor.lightGray
         })
         
-        observers.append(webView.observe(\.canGoForward, options: .new) { (_, changes) in
+        observers.append(webView.observe(\.canGoForward, options: .new) { [weak self] (_, changes) in
+            guard let self = self else {
+                return
+            }
             self.forwardButton.isEnabled = (changes.newValue == true)
             self.forwardButton.tintColor = (changes.newValue == true) ? self.navigationController?.toolbar.tintColor : UIColor.lightGray
         })
